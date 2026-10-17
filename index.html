@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Lentera Desa - Portofolio</title>
+  <meta name="description" content="Lentera Desa - portofolio aplikasi sederhana berbasis Google untuk pemerintahan desa.">
+  <meta name="theme-color" content="#0b3b2e">
+  <meta property="og:title" content="Lentera Desa - Portofolio">
+  <meta property="og:description" content="Aplikasi Sederhana, Dampak Nyata.">
+  <meta property="og:image" content="https://i.imgur.com/jr8apj9.png">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="https://i.imgur.com/jr8apj9.png">
+  <link rel="apple-touch-icon" href="https://i.imgur.com/jr8apj9.png">
+  <style>
+    :root { --brand: #0b3b2e; --gold: #f5a524; --gold-2: #ffcf6b; }
+    html, body { margin: 0; height: 100%; background: var(--brand); overflow: hidden; }
+    #app { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; display: block; background: var(--brand); }
+    #loader {
+      position: fixed; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+      background: radial-gradient(600px 400px at 70% 20%, rgba(245,165,36,.25), transparent 60%), var(--brand);
+      color: #fff; font: 600 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; text-align: center; padding: 16px;
+      transition: opacity .4s ease;
+    }
+    #loader.hide { opacity: 0; pointer-events: none; }
+    #loader img { width: 96px; height: 96px; object-fit: contain; animation: glow 2.4s ease-in-out infinite; }
+    #loader .bar { width: 160px; height: 4px; border-radius: 4px; background: rgba(255,255,255,.15); overflow: hidden; }
+    #loader .bar::after { content: ""; display: block; width: 40%; height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--gold), var(--gold-2)); animation: slide 1.2s ease-in-out infinite; }
+    #loader small { font-weight: 400; opacity: .7; }
+    #fallback { display: none; }
+    #fallback a { display: inline-block; margin-top: 6px; padding: 11px 20px; border-radius: 999px; background: linear-gradient(135deg, var(--gold), var(--gold-2)); color: #3b2500; text-decoration: none; font-weight: 700; }
+    @keyframes slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(250%); } }
+    @keyframes glow { 50% { transform: translateY(-6px); filter: drop-shadow(0 10px 24px rgba(255,207,107,.45)); } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+  </style>
+</head>
+<body>
+  <div id="loader" role="status" aria-live="polite">
+    <img src="https://i.imgur.com/jr8apj9.png" alt="Logo Lentera Desa">
+    <div>Lentera Desa - Portofolio</div>
+    <div class="bar" aria-hidden="true"></div>
+    <small id="loadText">Memuat aplikasi...</small>
+    <div id="fallback">
+      <small>Aplikasi belum tampil? Buka langsung di tab baru.</small><br>
+      <a id="openDirect" href="#" target="_blank" rel="noopener">Buka Aplikasi</a>
+    </div>
+  </div>
+
+  <iframe id="app" title="Lentera Desa - Portofolio"
+          allow="clipboard-write; fullscreen; web-share"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+  <noscript>
+    <p style="color:#fff;font-family:sans-serif;text-align:center;padding:24px">
+      JavaScript nonaktif. <a style="color:#ffcf6b" href="https://script.google.com/macros/s/AKfycbx48PfkjnBUOxmSK3iZTS7tGR0IoUoU5mSyPBxa5MeLtyMfnC7oXshgCs1kNwuDfPdZyA/exec">Buka aplikasi di sini</a>.
+    </p>
+  </noscript>
+
+  <script>
+    (function () {
+      // URL Web App Apps Script
+      var APP_URL = 'https://script.google.com/macros/s/AKfycbx48PfkjnBUOxmSK3iZTS7tGR0IoUoU5mSyPBxa5MeLtyMfnC7oXshgCs1kNwuDfPdZyA/exec';
+
+      // Teruskan parameter halaman ini ke aplikasi, mis. index.html?page=admin -> .../exec?page=admin
+      var src = APP_URL + (location.search || '') + (location.hash || '');
+
+      var frame = document.getElementById('app');
+      var loader = document.getElementById('loader');
+      document.getElementById('openDirect').href = src;
+
+      var done = false;
+      frame.addEventListener('load', function () {
+        done = true;
+        setTimeout(function () { loader.classList.add('hide'); }, 300);
+      });
+
+      // Jika setelah 15 detik belum termuat, tampilkan tombol buka langsung
+      setTimeout(function () {
+        if (!done) {
+          document.getElementById('loadText').textContent = 'Koneksi lambat...';
+          document.getElementById('fallback').style.display = 'block';
+        }
+      }, 15000);
+
+      frame.src = src;
+    })();
+  </script>
+</body>
+</html>
